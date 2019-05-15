@@ -20,7 +20,12 @@ def gradient_decent(line_parameters, points, y, alpha):
         p = sigmoid(points*line_parameters)
         grad = (points.T * (p-y))*(alpha/m)
         line_parameters = line_parameters - grad
+        w1= line_parameters.item(0)
+        w2 = line_parameters.item(1)
+        b = line_parameters.item(2)
 
+        x1 = np.array([points[:,0].min(),points[:,0].max()])
+        x2 = - b/w2 +x1 *( - w1 /w2)
 
 np.random.seed(0)
 n_pts=10
@@ -34,9 +39,8 @@ all_points=np.vstack((top_region, low_region))
 
 
 line_parameters = np.matrix([np.zeros(3)]).T
+gradient_decent(line_parameters, )
 
-
-linear_combination= all_points*line_parameters
 y = np.array([np.zeros(n_pts), np.ones(n_pts)]).reshape(n_pts*2,1)
 cross_error = calculate_error(line_parameters, all_points, y)
 print(cross_error)
