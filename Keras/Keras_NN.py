@@ -5,6 +5,18 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.optimizers import Adam
 
+
+def plot_decision_boundary(X, Y, model):
+    x_span = np.linspace(min(X[:, 0]) - 1, max(X[:, 0]) + 1)
+    y_span = np.linspace(min(X[:, 1]) - 1, max(X[:, 1]) + 1)
+    xx, yy = np.meshgrid(x_span, y_span)
+    xx_, yy_ = xx.ravel(), yy.ravel()
+    grid = np.c_[xx_, yy_]
+    pred_arr = model.predict(grid)
+    z = pred_arr.reshape(xx.shape)
+    plt.contourf(xx, yy, z)
+
+
 n_pts = 500
 np.random.seed(0)
 Xa = np.array([np.random.normal(13, 2, n_pts),
@@ -25,9 +37,14 @@ adam = Adam(lr = 0.1)
 model.compile(adam, loss = 'binary_crossentropy', metrics = ['accuracy', 'MSE'])
 h = model.fit(x = X, y = Y, verbose = 1, batch_size = 50, epochs = 40, shuffle = 'true' )
 
+plot_decision_boundary(X, Y, model)
+plt.scatter(X[:n_pts, 0], X[:n_pts, 1])
+plt.scatter(X[n_pts:, 0], X[n_pts:, 1])
+x = 7.5
+y = 5
 
-plt.plot(h.history['acc'])
-plt.title('accuracy')
-plt.xlabel('epoch')
-plt.legend('acc')
+point = np.array([[x, y]])
+prediction = model.predict(point)
+plt.plot([x], [y], marker='o', markersize=10, color="blue")
+print("prediction is: ", prediction)
 plt.show()
