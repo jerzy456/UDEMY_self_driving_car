@@ -56,7 +56,7 @@ def greeting():
     return 'App is running!'
 
 if __name__ == '__main__':
-
-    model = load_model('driving_model_8.h5')
+    #model = load_model('PilotNet_model-02-0.05.hdf5')
+    model = load_model('PilotNet_model-06-0.10.hdf5')
     app = socketio.Middleware(sio, app)
     eventlet.wsgi.server(eventlet.listen(('', 4567)), app)
